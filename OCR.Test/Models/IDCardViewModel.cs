@@ -40,5 +40,4 @@ namespace OCR.Test.Models
             public object[] recognize_warn_msg { get; set; }
         }
     }
-
 }

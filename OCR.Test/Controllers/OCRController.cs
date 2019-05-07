@@ -30,9 +30,7 @@ namespace OCR.Test.Controllers
                 frontRequest.AddHeader("Content-Type", "multipart/form-data");
                 var sign = OCRHelper.HmacSha1Sign();
                 frontRequest.AddHeader("Authorization", sign);
-
                 frontRequest.AlwaysMultipartFormData = true;
-
                 frontRequest.AddParameter("appid", ConfigHelper.Appid);
                 frontRequest.AddParameter("card_type", "0");
 
@@ -42,24 +40,18 @@ namespace OCR.Test.Controllers
                     stream.Read(bytes, 0, (int)stream.Length);
                     frontRequest.AddFileBytes("image[0]", bytes, "0.jpg", "image/jpeg");
                 }
-
                 var frontResponse = frontClient.Execute(frontRequest);
-
                 var frontStr = frontResponse.Content;
-
                 var backStr = string.Empty;
 
                 if (model.BackFile != null)
                 {
-
                     var backClient = new RestClient("http://recognition.image.myqcloud.com/ocr/idcard");
                     var backRequest = new RestRequest(Method.POST);
                     backRequest.AddHeader("Host", "recognition.image.myqcloud.com");
                     backRequest.AddHeader("Content-Type", "multipart/form-data");
                     backRequest.AddHeader("Authorization", OCRHelper.HmacSha1Sign());
-
                     backRequest.AlwaysMultipartFormData = true;
-
                     backRequest.AddParameter("appid", ConfigHelper.Appid);
                     backRequest.AddParameter("card_type", "1");
 
@@ -71,20 +63,17 @@ namespace OCR.Test.Controllers
                     }
 
                     var backResponse = backClient.Execute(backRequest);
-
                     backStr = backResponse.Content;
                 }
 
                 if (frontResponse.IsSuccessful)
                 {
                     var frontData = JsonConvert.DeserializeObject<IDCardViewModel>(frontStr);
-
                     if (model.BackFile != null)
                     {
                         var backData = JsonConvert.DeserializeObject<IDCardViewModel>(backStr);
                         frontData.result_list.AddRange(backData.result_list);
                     }
-
                     ViewData["result"] = frontData;
                 }
                 else
@@ -114,9 +103,7 @@ namespace OCR.Test.Controllers
                 frontRequest.AddHeader("Content-Type", "multipart/form-data");
                 var sign = OCRHelper.HmacSha1Sign();
                 frontRequest.AddHeader("Authorization", sign);
-
                 frontRequest.AlwaysMultipartFormData = true;
-
                 frontRequest.AddParameter("appid", ConfigHelper.Appid);
                 frontRequest.AddParameter("type", "1");
 
@@ -126,9 +113,7 @@ namespace OCR.Test.Controllers
                     stream.Read(bytes, 0, (int)stream.Length);
                     frontRequest.AddFileBytes("image", bytes, "0.jpg", "image/jpeg");
                 }
-
                 var frontResponse = frontClient.Execute(frontRequest);
-
                 var frontStr = frontResponse.Content;
 
                 if (frontResponse.IsSuccessful)
