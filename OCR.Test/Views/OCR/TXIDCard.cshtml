@@ -1,0 +1,44 @@
+﻿@model UploadViewModel
+@{
+    ViewData["Title"] = "TXIDCard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (ViewData["result"] != null)
+{
+    var result = ViewData["result"] as IDCardViewModel;
+    foreach (var item in result.result_list)
+    {
+        <div class="form-group">
+            @if (item.data.card_type == 0)
+            {
+                <h5>IdNum:@item.data.id</h5>
+                <h5>Name:@item.data.name</h5>
+                <h5>Nation:@item.data.nation</h5>
+                <h5>Sex:@item.data.sex</h5>
+                <h5>Birth:@item.data.birth</h5>
+                <h5>Address:@item.data.address</h5>
+            }
+            else
+            {
+                <h5>Authority:@item.data.authority</h5>
+                <h5>ValidDate:@item.data.valid_date</h5>
+            }
+        </div>
+    }
+}
+else if (ViewData["error"] != null)
+{
+    <h2>@ViewData["error"]</h2>
+}
+<form asp-controller="OCR" asp-action="IDCard" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label asp-for="FrontFile"></label>
+        <input type="file" asp-for="FrontFile" />
+    </div>
+    <div class="form-group">
+        <label asp-for="BackFile"></label>
+        <input type="file" asp-for="BackFile" />
+    </div>
+    <button type="submit" class="btn btn-default">提交</button>
+</form>
+

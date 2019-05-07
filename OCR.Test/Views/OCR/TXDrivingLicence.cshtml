@@ -1,0 +1,27 @@
+﻿@model UploadViewModel
+@{
+    ViewData["Title"] = "TXDrivingLicence";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewData["result"] != null)
+{
+    var result = ViewData["result"] as DrivingLicenceViewModel;
+    <div class="form-group">
+        @foreach (var item in result.data.items)
+        {
+        <h5>@item.item:@item.itemstring</h5>
+        }
+    </div>
+}
+else if (ViewData["error"] != null)
+{
+<h2>@ViewData["error"]</h2>
+}
+<form asp-controller="OCR" asp-action="DrivingLicence" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label asp-for="FrontFile"></label>
+        <input type="file" asp-for="FrontFile" />
+    </div>
+    <button type="submit" class="btn btn-default">提交</button>
+</form>
